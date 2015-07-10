@@ -11,7 +11,7 @@ using namespace std;
 void display_vector(vector<long> *vVec);
 void quickSortInternal(vector<long> *vVec, long Start, long End);
 void quickSort(vector<long> *vVec);
-void selectionSort(vector<long> &vVec);
+void selectionSort(vector<long> *vVec);
 void MergeSort(vector<long> *mergeVec);
 void internalMergeSort(vector<long> *mergeVec, long start, long end);
 void merge(vector<long> *mergeVec, long lowStart,long lowEnd, long highStart, long highEnd);
@@ -22,21 +22,26 @@ void insertionSort(vector<long> *insertVec);
 //accessed in multiple functions without being required to pass around a varible.
 
 long InsertionCount(){
-	static long InsertCount =0;
+	static long InsertCount = 0;
 	InsertCount++;
 	return InsertCount;
 }
 	
 long MergeCount(){
-	static long MergeCount =0;
+	static long MergeCount = 0;
 	MergeCount++;
 	return MergeCount;
 }
 
 long QuickCount(){
-	static long QuickCount =0;
+	static long QuickCount = 0;
 	QuickCount++;
 	return QuickCount;
+}
+long SelectionCount(){
+	static long SelectionCount = 0; 
+	SelectionCount++;
+	return SelectionCount;
 }
 
 //Gets input from the user and based off of the responce creates 3 vectors of length n and 
@@ -47,9 +52,8 @@ int main(int argc, char * argv[])
 	vector<long> *MergeVec = new vector<long>;
 	vector<long> *InsertVec = new vector<long>;
 	vector<long> *QuickVec = new vector<long>;
-	vector<long> *MergeVecTwo = new vector<long>;
-	vector<long> *InsertVecTwo = new vector<long>;
-	vector<long> *QuickVecTwo = new vector<long>;
+	vector<long> *SelectionVec = new vector<long>;
+
 	cout<<"Enter [1] to test the sorting methods on a vector with elements in reverse order\nEnter [2] to test the sorting methods on a differently organized vector. ";
 	int User;
 	cin>>User;
@@ -61,51 +65,35 @@ int main(int argc, char * argv[])
 			MergeVec->push_back(i);
 			InsertVec->push_back(i);
 			QuickVec->push_back(i);
+			SelectionVec->push_back(i);
 		}
 		else{
 			if(i-VecSize/2 >=1){
-				MergeVecTwo->push_back(long(i-VecSize/2));
-				InsertVecTwo->push_back(long(i-VecSize/2));
-				QuickVecTwo->push_back(long(i-VecSize/2));
+				MergeVec->push_back(long(i-VecSize/2));
+				InsertVec->push_back(long(i-VecSize/2));
+				QuickVec->push_back(long(i-VecSize/2));
+				SelectionVec->push_back(long(i - VecSize / 2));
 			}
 			else{
-				MergeVecTwo->push_back(long(VecSize-i+1));
-				InsertVecTwo->push_back(long(VecSize-i+1));
-				QuickVecTwo->push_back(long(VecSize-i+1));
+				MergeVec->push_back(long(VecSize-i+1));
+				InsertVec->push_back(long(VecSize-i+1));
+				QuickVec->push_back(long(VecSize-i+1));
+				SelectionVec->push_back(long(VecSize - i + 1));
+
 			}
 		}
 	}
 	
-	
-	//cout<< "Vector before: "<<endl;
-	//if(User==1)
-	//	display_vector(MergeVec);
-	//else
-	//	display_vector(MergeVecTwo);
-	
-
     // Now actually call the sort
-	if(User==1){
-		quickSort(QuickVec);
-		insertionSort(InsertVec);
-		MergeSort(MergeVec);
-	}
-	else{
-		quickSort(QuickVecTwo);
-		insertionSort(InsertVecTwo);
-		MergeSort(MergeVecTwo);
-	}
-
-	/*
-	cout << "Vector after Merge Sort: " << endl;
-	display_vector(MergeVecTwo);
-	cout << "Vector after Insertion Sort: " << endl;
-	display_vector(InsertVecTwo);
-	cout << "Vector after Quick Sort: " << endl;
-	display_vector(QuickVecTwo);
-	*/
 	
+	quickSort(QuickVec);
+	insertionSort(InsertVec);
+	MergeSort(MergeVec);
+	selectionSort(SelectionVec);
+	
+
 	cout<< "Total number of Insertion Sort actions: " <<(InsertionCount())-1<<endl;
+	cout << "Total number of Selection Sort actions: " << (SelectionCount())-1 << endl;
 	cout<< "Total number of Merge Sort actions: " <<(MergeCount())-1<<endl;
 	cout<< "Total number of Quick Sort actions: " << (QuickCount())-1<<endl;
 
@@ -235,16 +223,20 @@ void insertionSort(vector<long> *insertVec)
 
 }
 //Just for fun
-void selectionSort(vector<long> &vVec){ 
+void selectionSort(vector<long> *vVec){ 
 	long min;
-	for(long i = 0; i<vVec.size();i++){
+	for(long i = 0; i < vVec->size(); i++){
+		SelectionCount();
 		min=i;
-		for(long j = i+1;j<vVec.size();j++){
-			if(vVec[min]>vVec[j]){
-			min = j;
+		for(long j = i+1;j<vVec->size();j++){
+			SelectionCount();
+			if((*vVec)[min]> (*vVec)[j]){
+				SelectionCount();
+				min = j;
 			}
 		}
-		swap(vVec[min],vVec[i]);
+		SelectionCount();
+		swap((*vVec)[min],(*vVec)[i]);
 	}
 
 }
