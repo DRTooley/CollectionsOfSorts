@@ -50,7 +50,7 @@ int main(int argc, char * argv[])
 	vector<long> *MergeVecTwo = new vector<long>;
 	vector<long> *InsertVecTwo = new vector<long>;
 	vector<long> *QuickVecTwo = new vector<long>;
-	cout<<"Vector 1 or vector 2?";
+	cout<<"Enter [1] to test the sorting methods on a vector with elements in reverse order\nEnter [2] to test the sorting methods on a differently organized vector. ";
 	int User;
 	cin>>User;
 	cout<< "How big of a vector do you want?";
